@@ -61,10 +61,6 @@ public class Dashboard {
 
     private static void printTodoList() {
         List<FakeTask> tasks = new ArrayList<>();
-        tasks.add(new FakeTask("Essay Draft", -1));
-        tasks.add(new FakeTask("Science Report", 0));
-        tasks.add(new FakeTask("Math Assignment", 2));
-        tasks.add(new FakeTask("Read Chapter 5", 4));
 
         StringBuilder sb = new StringBuilder();
         int shown = 0;
@@ -79,9 +75,6 @@ public class Dashboard {
 
     private static void printCourseList() {
         List<FakeCourse> courses = new ArrayList<>();
-        courses.add(new FakeCourse("8:00",  "Math Quiz"));
-        courses.add(new FakeCourse("10:00", "Science Lab"));
-        courses.add(new FakeCourse("2:00",  "English Essay"));
 
         StringBuilder sb = new StringBuilder();
         for (FakeCourse c : courses) {
