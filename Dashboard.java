@@ -1,22 +1,10 @@
 package studyplanner;
 
 import java.util.Scanner;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.InputMismatchException;
 
 public class Dashboard {
-
-    private static class FakeTask {
-        String title;
-        long daysLeft;
-        FakeTask(String t, long d) { title = t; daysLeft = d; }
-    }
-
-    private static class FakeCourse {
-        String time, name;
-        FakeCourse(String t, String n) { time = t; name = n; }
-    }
 
     public static void show() {
         Scanner scanner = new Scanner(System.in);
@@ -40,16 +28,32 @@ public class Dashboard {
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input! Please try again.");
                 scanner.nextLine(); 
+                System.out.print("Press ENTER to continue...");
+                scanner.nextLine();
                 continue;
             }
 
-            handleChoice(choice);  
+            handleChoice(choice); 
+            
+            if (choice == 2) return; 
+            
+            System.out.print("\nPress ENTER to continue...");
+            scanner.nextLine();
         }
     }
 
     private static void printStats() {
         int pending = 0, overdue = 0, done = 0;
-        double progress = 0;
+        
+        List<Task> allTasks = ManageTask.getAllTasks();
+        
+        for (Task t : allTasks) {
+            if (t.getStatus().equals("PENDING")) pending++;
+            if (t.getStatus().equals("DONE")) done++;
+            if (t.getDaysLeft() < 0 && t.getStatus().equals("PENDING")) overdue++;
+        }
+        
+        double progress = allTasks.isEmpty() ? 0 : (done * 100.0) / allTasks.size();
 
         String content =
                 "Pending: " + pending +
@@ -60,27 +64,26 @@ public class Dashboard {
     }
 
     private static void printTodoList() {
-        List<FakeTask> tasks = new ArrayList<>();
+        List<Task> tasks = ManageTask.getAllTasks();
+
+        if (tasks.isEmpty()) {
+            TerminalUI.box("📌 TASKS", "No tasks yet. Add one in To-Do List!", 60);
+            return;
+        }
 
         StringBuilder sb = new StringBuilder();
         int shown = 0;
-        for (FakeTask t : tasks) {
+        for (Task t : tasks) {
             if (shown >= 4) break;
-            String tag = TerminalUI.deadlineTag(t.daysLeft);
-            sb.append(tag).append(" ").append(t.title).append("\n");
+            String tag = TerminalUI.deadlineTag(t.getDaysLeft());
+            sb.append(tag).append(" ").append(t.getTitle()).append("\n");
             shown++;
         }
         TerminalUI.box("📌 TASKS", sb.toString().stripTrailing(), 60);
     }
 
     private static void printCourseList() {
-        List<FakeCourse> courses = new ArrayList<>();
-
-        StringBuilder sb = new StringBuilder();
-        for (FakeCourse c : courses) {
-            sb.append(c.time).append("  ").append(c.name).append("\n");
-        }
-        TerminalUI.box("📅 TODAY", sb.toString().stripTrailing(), 60);
+        TerminalUI.box("📅 TODAY", "No classes scheduled for today.", 60);
     }
 
     private static void printMotivation() {
@@ -95,7 +98,7 @@ public class Dashboard {
     private static void handleChoice(int choice) {
         switch (choice) {
             case 1:
-                System.out.println("→ [To-Do List] Coming soon...");
+                TaskMenu.show();
                 break; 
             case 2:
                 System.out.println("Goodbye!");

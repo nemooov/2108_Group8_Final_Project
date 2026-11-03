@@ -1,9 +1,11 @@
 package studyplanner;
 
 public class TerminalUI {
-	public static void clear() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+
+    public static void clear() {
+        for (int i = 0; i < 0; i++) {
+            System.out.println();
+        }
     }
 
     public static void box(String title, String content, int width) {
@@ -24,14 +26,13 @@ public class TerminalUI {
     public static String progressBar(double percent, int length) {
         int filled = (int) Math.round((percent / 100.0) * length);
         filled = Math.max(0, Math.min(length, filled));
-        String bar = "█".repeat(filled) + "░".repeat(length - filled);
-        return bar;
+        return "█".repeat(filled) + "░".repeat(length - filled);
     }
 
     public static String deadlineTag(long daysLeft) {
         if (daysLeft < 0)  return "[OVERDUE]";
         if (daysLeft == 0) return "[TODAY]  ";
-        if (daysLeft <= 3) return "[SOON]   ";
+        if (daysLeft <= 3) return "[URGENT]   ";
         return "[UPCOMING]";
     }
 }
