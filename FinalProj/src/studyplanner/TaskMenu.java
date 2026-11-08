@@ -84,7 +84,7 @@ public class TaskMenu {
                 String tag = TerminalUI.deadlineTag(t.getDaysLeft());
                 
                 String line1 = "ID: " + t.getId() + " | [" + t.getStatus() + "] " + t.getTitle();
-                String line2 = "Subject: " + t.getSubject() + " | Due: " + t.getDeadline();
+                String line2 = "Course Code: " + t.getSubject() + " | Due: " + t.getDeadline();
                 String line3 = "Priority: " + t.getPriority() + " " + tag;
                 
                 System.out.printf("│ %-58s │%n", line1);

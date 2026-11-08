@@ -33,6 +33,6 @@ public class TerminalUI {
         if (daysLeft < 0)  return "[OVERDUE]";
         if (daysLeft == 0) return "[TODAY]  ";
         if (daysLeft <= 3) return "[URGENT]   ";
-        return "[UPCOMING]";
+        return "[SOON]";
     }
 }
