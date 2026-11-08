@@ -19,6 +19,15 @@ public class ManageTask {
         tasks.removeIf(t -> t.getId() == id);
     }
 
+    public static void markTaskAsDone(int id) {
+        for (Task t : tasks) {
+            if (t.getId() == id) {
+                t.setStatus("DONE");
+                break;
+            }
+        }
+    }
+
     public static int getNextId() {
         return nextId++;
     }
