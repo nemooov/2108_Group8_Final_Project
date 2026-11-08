@@ -23,9 +23,12 @@ public class Task {
     public LocalDate getDeadline() { return deadline; }
     public String getPriority() { return priority; }
     public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
     
     public long getDaysLeft() {
         return java.time.temporal.ChronoUnit.DAYS.between(LocalDate.now(), deadline);
+    }
+
+	public void setStatus(String status) {
+        this.status = status;
     }
 }
