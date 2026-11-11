@@ -18,7 +18,6 @@ public class Dashboard {
             printStats();
             printTodoList();
             printCourseList();
-            printMotivation();
             printMenu();
 
             int choice = -1;
@@ -36,7 +35,7 @@ public class Dashboard {
 
             handleChoice(choice); 
             
-            if (choice == 2) return; 
+            if (choice == 3) return; 
             
             System.out.print("\nPress ENTER to continue...");
             scanner.nextLine();
@@ -61,11 +60,10 @@ public class Dashboard {
                 "  Overdue: " + overdue + "\n" +
                 "Done:    " + done +
                 "  " + TerminalUI.progressBar(progress, 10);
-        TerminalUI.box("📊 STATS", content, 60);
+        TerminalUI.box("STATS", content, 60);
     }
 
     private static void printTodoList() {
-        
         List<Task> tasks = ManageTask.getAllTasks();
 
         List<Task> pendingTasks = new ArrayList<>();
@@ -76,7 +74,7 @@ public class Dashboard {
         }
 
         if (pendingTasks.isEmpty()) {
-            TerminalUI.box("📌 TASKS", "No pending tasks. You're all caught up!", 60);
+            TerminalUI.box("TASKS", "No pending tasks. You're all caught up!", 60);
             return;
         }
 
@@ -93,20 +91,28 @@ public class Dashboard {
             sb.append("... and ").append(pendingTasks.size() - 4).append(" more\n");
         }
         
-        TerminalUI.box("📌 TASKS", sb.toString().stripTrailing(), 60);
+        TerminalUI.box("TASKS", sb.toString().stripTrailing(), 60);
     }
 
     private static void printCourseList() {
-        TerminalUI.box("📅 TODAY", "No classes scheduled for today.", 60);
-    }
+        List<Calendar.CalendarItem> todayItems = Calendar.getTodayItems();
+        
+        if (todayItems.isEmpty()) {
+            TerminalUI.box("TODAY", "No classes scheduled for today.", 60);
+            return;
+        }
 
-    private static void printMotivation() {
-        System.out.println("\n  ✦ Start now! 🚀");
+        StringBuilder sb = new StringBuilder();
+        for (Calendar.CalendarItem item : todayItems) {
+            sb.append(item.getTime()).append(" - ").append(item.getTitle()).append("\n");
+        }
+        
+        TerminalUI.box("TODAY", sb.toString().stripTrailing(), 60);
     }
 
     private static void printMenu() {
-        String menu = "[1] To-Do List     [2] Logout";
-        TerminalUI.box("📖 MENU", menu, 60);
+        String menu = "[1] To-Do List     [2] Calendar     [3] Exit";
+        TerminalUI.box("MENU", menu, 60);
     }
 
     private static void handleChoice(int choice) {
@@ -115,6 +121,9 @@ public class Dashboard {
                 TaskMenu.show();
                 break; 
             case 2:
+                CalendarMenu.show(); 
+                break;
+            case 3:
                 System.out.println("Goodbye!");
                 System.exit(0);
                 break;
