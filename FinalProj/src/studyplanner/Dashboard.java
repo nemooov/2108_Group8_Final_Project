@@ -2,6 +2,7 @@ package studyplanner;
 
 import java.util.Scanner;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 
 public class Dashboard {
@@ -64,21 +65,34 @@ public class Dashboard {
     }
 
     private static void printTodoList() {
+        
         List<Task> tasks = ManageTask.getAllTasks();
 
-        if (tasks.isEmpty()) {
-            TerminalUI.box("📌 TASKS", "No tasks yet. Add one in To-Do List!", 60);
+        List<Task> pendingTasks = new ArrayList<>();
+        for (Task t : tasks) {
+            if (t.getStatus().equals("PENDING")) {
+                pendingTasks.add(t);
+            }
+        }
+
+        if (pendingTasks.isEmpty()) {
+            TerminalUI.box("📌 TASKS", "No pending tasks. You're all caught up!", 60);
             return;
         }
 
         StringBuilder sb = new StringBuilder();
         int shown = 0;
-        for (Task t : tasks) {
+        for (Task t : pendingTasks) {
             if (shown >= 4) break;
             String tag = TerminalUI.deadlineTag(t.getDaysLeft());
             sb.append(tag).append(" ").append(t.getTitle()).append("\n");
             shown++;
         }
+        
+        if (pendingTasks.size() > 4) {
+            sb.append("... and ").append(pendingTasks.size() - 4).append(" more\n");
+        }
+        
         TerminalUI.box("📌 TASKS", sb.toString().stripTrailing(), 60);
     }
 
