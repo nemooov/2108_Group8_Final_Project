@@ -45,7 +45,7 @@ public class TaskMenu {
         }
     }
 
-        private static void addTask(Scanner scanner) {
+    private static void addTask(Scanner scanner) {
         System.out.println("\n--- ADD NEW TASK ---");
         
         System.out.print("Enter Task Type (1-Exam, 2-Assignment, 3-Project): ");
@@ -104,7 +104,7 @@ public class TaskMenu {
         scanner.nextLine();
     }
 
-        private static void viewTasks(Scanner scanner) {
+    private static void viewTasks(Scanner scanner) {
     	System.out.println("\n+----------------------------------------------------------+");
     	System.out.println("|                     ALL TASKS                            |");
     	System.out.println("+----------------------------------------------------------+");
@@ -139,9 +139,9 @@ public class TaskMenu {
             int id = Integer.parseInt(scanner.nextLine());
             ManageTask.deleteTask(id);
             FileManager.saveTasks(ManageTask.getAllTasks()); 
-            System.out.println("✅ Task deleted.");
+            System.out.println("Task deleted.");
         } catch (NumberFormatException e) {
-            System.out.println("❌ Invalid ID.");
+            System.out.println("Invalid ID.");
         }
         System.out.print("Press ENTER to continue...");
         scanner.nextLine(); 
