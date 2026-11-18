@@ -33,9 +33,9 @@ public class Dashboard {
                 continue;
             }
 
-            handleChoice(choice); 
+            handleChoice(choice, scanner); 
             
-            if (choice == 3) return; 
+            if (choice == 4) return; 
             
             System.out.print("\nPress ENTER to continue...");
             scanner.nextLine();
@@ -110,12 +110,70 @@ public class Dashboard {
         TerminalUI.box("TODAY", sb.toString().stripTrailing(), 60);
     }
 
+    private static void filterTasksDashboard(Scanner scanner) {
+        System.out.println("\n--- FILTER TASKS ---");
+        System.out.println("[1] Filter by Priority (HIGH/MED/LOW)");
+        System.out.println("[2] Filter by Status (PENDING/DONE)");
+        System.out.print("Choose filter type: ");
+        String filterChoice = scanner.nextLine().trim();
+
+        List<Task> allTasks = ManageTask.getAllTasks();
+        List<Task> results = new ArrayList<>();
+        String filterTitle = "";
+
+        if (filterChoice.equals("1")) {
+            System.out.print("Enter Priority to filter (HIGH/MED/LOW): ");
+            String priority = scanner.nextLine().trim().toUpperCase();
+            filterTitle = "Priority: " + priority;
+            for (Task t : allTasks) {
+                if (t.getPriority().equals(priority)) {
+                    results.add(t);
+                }
+            }
+        } else if (filterChoice.equals("2")) {
+            System.out.print("Enter Status to filter (PENDING/DONE): ");
+            String status = scanner.nextLine().trim().toUpperCase();
+            filterTitle = "Status: " + status;
+            for (Task t : allTasks) {
+                if (t.getStatus().equals(status)) {
+                    results.add(t);
+                }
+            }
+        } else {
+            System.out.println("Invalid filter choice.");
+            return;
+        }
+
+        System.out.println("\n+----------------------------------------------------------+");
+        String titleLine = "FILTERED TASKS (" + filterTitle + ")";
+        System.out.printf("| %-56s |%n", titleLine);
+        System.out.println("+----------------------------------------------------------+");
+
+        if (results.isEmpty()) {
+            System.out.println("| No tasks found matching your filter.                     |");
+            System.out.println("+----------------------------------------------------------+");
+        } else {
+            for (Task t : results) {
+                String tag = TerminalUI.deadlineTag(t.getDaysLeft());
+                String line1 = "ID: " + t.getId() + " | [" + t.getTaskType() + "] " + t.getTitle();
+                String line2 = "Subject: " + t.getSubject() + " | Due: " + t.getDeadline();
+                String line3 = "Priority: " + t.getPriority() + " | Status: " + t.getStatus() + " " + tag;
+
+                System.out.printf("| %-56s |%n", line1);
+                System.out.printf("| %-56s |%n", line2);
+                System.out.printf("| %-56s |%n", line3);
+                System.out.println("+----------------------------------------------------------+");
+            }
+        }
+    }
+
     private static void printMenu() {
-        String menu = "[1] To-Do List     [2] Calendar     [3] Exit";
+        String menu = "[1] To-Do List     [2] Calendar     [3] Filter Tasks\n" +
+                      "[4] Logout";
         TerminalUI.box("MENU", menu, 60);
     }
 
-    private static void handleChoice(int choice) {
+    private static void handleChoice(int choice, Scanner scanner) {
         switch (choice) {
             case 1:
                 TaskMenu.show();
@@ -124,6 +182,9 @@ public class Dashboard {
                 CalendarMenu.show(); 
                 break;
             case 3:
+                filterTasksDashboard(scanner); 
+                break;
+            case 4:
                 System.out.println("Goodbye!");
                 System.exit(0);
                 break;
