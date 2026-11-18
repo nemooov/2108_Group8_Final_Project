@@ -15,4 +15,4 @@ public String getTime() {
 public String getTitle() { 
     return title; 
 }
-# the data fields (day, time, and title) are kept private so they cannot be changed directly from outside the class. They are safely exposed for reading using public getter methods (getDay(), getTime(), and getTitle()).
+# The data fields (day, time, and title) are kept private so they cannot be changed directly from outside the class. They are safely exposed for reading using public getter methods (getDay(), getTime(), and getTitle()).
