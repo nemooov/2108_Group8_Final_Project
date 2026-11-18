@@ -45,13 +45,16 @@ public class TaskMenu {
         }
     }
 
-    private static void addTask(Scanner scanner) {
+        private static void addTask(Scanner scanner) {
         System.out.println("\n--- ADD NEW TASK ---");
+        
+        System.out.print("Enter Task Type (1-Exam, 2-Assignment, 3-Project): ");
+        String typeChoice = scanner.nextLine().trim();
         
         System.out.print("Enter Title: ");
         String title = scanner.nextLine().trim();
         
-        System.out.print("Enter Course Code: ");
+        System.out.print("Enter Subject/Course Code: ");
         String subject = scanner.nextLine().trim();
         
         System.out.print("Enter Priority (HIGH/MED/LOW): ");
@@ -60,7 +63,7 @@ public class TaskMenu {
         System.out.print("Enter days until deadline: ");
         int days = 1; 
         try {
-        	String daysInput = scanner.nextLine().trim();
+            String daysInput = scanner.nextLine().trim();
             if (!daysInput.isEmpty()) {
                 days = Integer.parseInt(daysInput);
             }
@@ -69,12 +72,20 @@ public class TaskMenu {
         }
         
         LocalDate deadline = LocalDate.now().plusDays(days);
-        Task newTask = new Task(ManageTask.getNextId(), title, subject, deadline, priority);
+        
+        Task newTask;
+        if (typeChoice.equals("1")) {
+            newTask = new Exam(ManageTask.getNextId(), title, subject, deadline, priority);
+        } else if (typeChoice.equals("3")) {
+            newTask = new Project(ManageTask.getNextId(), title, subject, deadline, priority);
+        } else {
+            newTask = new Assignment(ManageTask.getNextId(), title, subject, deadline, priority); // Default
+        }
         
         ManageTask.addTask(newTask);
         FileManager.saveTasks(ManageTask.getAllTasks()); 
         
-        System.out.println("\n✅ Success! Task added.");
+        System.out.println("\n✅ Success! " + newTask.getTaskType() + " added.");
         System.out.print("Press ENTER to continue...");
         scanner.nextLine(); 
     }
@@ -108,7 +119,7 @@ public class TaskMenu {
                 
                 String line1 = "ID: " + t.getId() + " | [" + t.getStatus() + "] " + t.getTitle();
                 String line2 = "Course Code: " + t.getSubject() + " | Due: " + t.getDeadline();
-                String line3 = "Priority: " + t.getPriority() + " " + tag;
+                String line3 = "Priority: " + t.getPriority() + " | Status: " + t.getStatus() + " " + tag;
 
                 System.out.printf("| %-56s |%n", line1);
                 System.out.printf("| %-56s |%n", line2);
