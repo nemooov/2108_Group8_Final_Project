@@ -86,4 +86,3 @@ The exact compilation and execution commands depend on the complete project stru
 
 ## Documentation
 
-*To be updated with the project proposal, UML class diagram, and other supporting documentation.*
