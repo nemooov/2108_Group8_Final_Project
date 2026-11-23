@@ -31,7 +31,10 @@ Java, Java Collections Framework (`ArrayList` and `List`), Lambda Expressions, a
 
 ## Team Members and Roles
 
-*To be updated with the actual team members and their respective roles.*
+- Aurelio, Anika Ava K. - Team Leader
+- Catral, Ian Dave G. - System/Design Lead
+- Hernandez, Denise Charelle D. - Documentation
+- Villegas, Nemesio P. - Lead Programmer
 
 ## OOP Concepts Demonstrated
 
